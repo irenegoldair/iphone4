@@ -244,6 +244,7 @@ deliveryRadios.forEach(radio => {
 const submitForm = document.getElementById("submitForm");
 
 submitForm.addEventListener("click", () => {
+    e.preventDefault(); 
 
     if (deliveryDate.value.trim() === "") {
         showPopup("Επιλέξτε ημερομηνία παράδοσης.");
