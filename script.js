@@ -251,6 +251,18 @@ submitForm.addEventListener("click", () => {
     }
 
     
+// ✅ ΑΥΤΟ ΕΙΝΑΙ ΤΟ FIX ΓΙΑ IPHONE
+    const parsedDate = parseLocalDate(deliveryDate.value);
+
+    if (!parsedDate || isInvalidDate(parsedDate)) {
+        showPopup(
+            "Η ημερομηνία επιλογής δεν μπορεί να είναι αυθημερών, " +
+            "Σάββατο, Κυριακή ή αργία."
+        );
+        return;
+    }
+
+    
 
 const selectedRadio = document.querySelector("input[name='deliveryMethod']:checked");
 
