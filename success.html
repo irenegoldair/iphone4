@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<title>Ολοκλήρωση Αιτήματος</title>
+
+<style>
+body {
+    font-family: 'Manrope', sans-serif;
+    background: #111;
+    margin: 0;
+    padding: 0;
+}
+.success-card {
+    background: #1a1a1a;
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 40px;
+    border-radius: 14px;
+    text-align: center;
+    color: #fff;
+}
+.success-card h1 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #5cd35c;
+}
+.success-info {
+    margin-top: 30px;
+    background: #222;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: left;
+}
+.success-info p {
+    margin: 8px 0;
+    font-size: 15px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="success-card">
+    <h1>✅ Το αίτημα σας καταχωρήθηκε επιτυχώς</h1>
+    <p>Τα στοιχεία παράδοσης έχουν ληφθεί.</p>
+
+    <div class="success-info">
+        <p><strong>Ημερομηνία παράδοσης:</strong> <span id="dateField"></span></p>
+        <p><strong>Διεύθυνση παράδοσης:</strong><br><span id="addressField"></span></p>
+    </div>
+</div>
+
+<script>
+    // Παίρνουμε τις παραμέτρους από το URL
+    const params = new URLSearchParams(window.location.search);
+
+    const date = params.get("date");
+    const address = params.get("address");
+
+    // Βάζουμε τα δεδομένα στη σελίδα
+    function formatDateToGR(dateStr) {
+    // dateStr = "2026-03-31"
+    const parts = dateStr.split("-");
+    return `${parts[2]}-${parts[1]}-${parts[0]}`; 
+}
+
+document.getElementById("dateField").textContent =
+    date ? formatDateToGR(date) : "-";
+    document.getElementById("addressField").textContent = address || "-";
+</script>
+
+</body>
+</html>

@@ -1,0 +1,515 @@
+/* ==========================================================
+   FONT — MANROPE
+========================================================== */
+body {
+    margin: 0;
+    font-family: "Manrope", sans-serif;
+    background: #111;
+    color: #fff;
+}
+
+
+/* ==========================================================
+   MAIN CARD CONTAINER
+========================================================== */
+.card-container {
+    background: #1a1a1a;
+    padding: 30px;
+    border-radius: 14px;
+    max-width: 900px;
+    margin: 30px auto;
+    box-sizing: border-box;
+}
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+.form-header {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.header-top {
+    background: #2f5597;
+    color: #fff;
+    padding: 28px 32px;
+}
+
+.section-label {
+    font-size: 13px;
+    opacity: 0.9;
+    letter-spacing: 1px;
+}
+
+.header-top h1 {
+    margin: 6px 0 2px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.details {
+    opacity: 0.95;
+    font-size: 14px;
+}
+
+/* ✅ INFO BOX */
+.header-info {
+    background: #f6ecd7;
+    color: #1a1a1a;
+    border-left: 4px solid #d7b15a;
+    padding: 20px 28px;
+    display: flex;
+    gap: 14px;
+    align-items: center; 
+}
+
+.info-icon {
+    font-size: 20px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+}
+
+.header-bottom {
+    background: #222;
+    padding: 18px 28px;
+}
+
+
+/* ==========================================================
+   SECTIONS
+========================================================== */
+.section-block {
+    background: #1e1e1e;
+    padding: 28px 32px;
+    border-top: 1px solid #333;
+    box-sizing: border-box;
+}
+
+.section-title {
+    color: #ccc;
+    font-size: 14px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+
+/* ==========================================================
+   GRID SYSTEM
+========================================================== */
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px; 
+}
+
+.tk-grid .input-group {
+    margin-bottom: 20px !important;
+}
+
+
+/* ==========================================================
+   INFO BOXES
+========================================================== */
+.info-box {
+    background: #2a2a2a;
+    padding: 16px 20px;
+    border-radius: 12px;
+}
+
+.info-box label {
+    font-size: 13px;
+    opacity: 0.8;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.value {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.badge.success {
+    background: #d5f3c7;
+    color: #2b7e22;
+    padding: 5px 12px;
+    font-size: 13px;
+    border-radius: 8px;
+}
+
+
+/* ==========================================================
+   INPUTS
+========================================================== */
+.input-group {
+    margin-bottom: 22px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.input-dark,
+textarea.textarea-dark {
+    width: 100%;
+    background: #2a2a2a;
+    color: #eee;
+    border: 1px solid #444;
+    padding: 14px 16px;
+    border-radius: 12px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+.input-dark::placeholder,
+textarea.textarea-dark::placeholder {
+    color: #888;
+}
+
+
+/* ==========================================================
+   CLICKABLE DATE BAR
+========================================================== */
+
+
+.date-bar {
+    background: #2a2a2a;
+    border-radius: 12px;
+    border: 1px solid #444;
+
+    /* ❗ δεν βάζουμε padding εδώ */
+    padding: 0;
+
+    display: flex;
+    align-items: stretch;
+    cursor: pointer;
+    position: relative;
+}
+
+/* το input ΚΑΛΥΠΤΕΙ ΟΛΗ ΤΗ ΓΡΑΜΜΗ */
+.date-bar input {
+    width: 100%;
+    height: 52px;               /* ίδιο visual ύψος */
+    padding: 14px 16px;
+
+    background: transparent;
+    border: none;
+    outline: none;
+
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+
+    /* iOS critical */
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 12px;
+    
+}
+
+
+.calendar-icon {
+    pointer-events: none;
+}
+
+
+/* ==========================================================
+   ADDRESS BOX
+========================================================== */
+.address-box {
+    background: #2a2a2a;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 22px;
+}
+
+
+/* ==========================================================
+   BUTTONS
+========================================================== */
+.btn-outline,
+.btn-primary {
+    padding: 13px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.btn-outline {
+    background: transparent;
+    color: #ddd;
+    border: 1px solid #999;
+}
+
+.btn-outline.fullwidth {
+    width: 100%;
+}
+
+.btn-primary {
+    background: #3a66c0;
+    color: #fff;
+    border: none;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background: #3259aa;
+}
+
+
+/* ==========================================================
+   RADIO / CHECKBOX
+========================================================== */
+.radio-line,
+.checkbox-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.radio-line input,
+.checkbox-line input {
+    width: 18px;
+    height: 18px;
+}
+
+
+/* ==========================================================
+   CUSTOMER SERVICE PANEL
+========================================================== */
+.cs-box {
+    background: #2a2a2a;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+
+/* ==========================================================
+   RAMP MAP
+========================================================== */
+.ramp-map strong {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.ramp-map iframe {
+    width: 100%;
+    height: 260px;
+    border: 0;
+    display: block;
+    border-radius: 12px;
+}
+
+
+/* ==========================================================
+   DISABLED NEW ADDRESS WHEN RAMP
+========================================================== */
+.new-address.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+
+/* ==========================================================
+   MODAL POPUP
+========================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-box {
+    background: #222;
+    padding: 24px 26px;
+    border-radius: 12px;
+    text-align: center;
+    width: 300px;
+}
+
+#modalMessage {
+    font-size: 15px;
+    margin-bottom: 14px;
+}
+
+#modalClose {
+    margin-top: 10px;
+    background: #3a66c0;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+@media (max-width: 768px) {
+
+    .grid-2,
+    .grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .card-container {
+        padding: 20px;
+    }
+
+    .section-block {
+        padding: 20px;
+    }
+}
+
+input[type="date"] {
+    position: relative;
+    z-index: 2;
+}
+#changeAddressBtn {
+    margin-bottom: 18px;   
+}
+.deliveryOption {
+    accent-color: #3a66c0; 
+    width: 18px;
+    height: 18px;
+}
+.radio-line input[type="radio"] {
+    accent-color: #3a66c0;
+    width: 17px;
+    height: 17px;
+}
+
+.checkbox-line input[type="checkbox"] {
+    accent-color: #3a66c0;
+    width: 17px;
+    height: 17px;
+}
+.subtitle {
+    display: block;
+    color: #ccc;
+    font-size: 14px;
+    margin: 10px 0 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+/* ==========================================================
+   STORAGE TERMS
+========================================================== */
+
+.storage-terms {
+    background: #1e1e1e;
+}
+
+.terms-box {
+    background: #252525;
+    border-radius: 14px;
+    padding: 22px;
+    border: 1px solid #333;
+}
+
+.terms-intro {
+    font-size: 15px;
+    margin-bottom: 10px;
+    color: #eee;
+}
+
+.terms-sub {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 18px;
+}
+
+.terms-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.term-card {
+    background: #2f2f2f;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    border: 1px solid #3a3a3a;
+    transition: 0.2s;
+}
+
+.term-card span {
+    display: block;
+    font-size: 13px;
+    color: #bbb;
+    margin-bottom: 6px;
+}
+
+.term-card strong {
+    display: block;
+    font-size: 18px;
+    color: #fff;
+}
+
+.term-card small {
+    font-size: 12px;
+    color: #888;
+}
+
+.term-card:hover {
+    transform: translateY(-3px);
+    border-color: #3a66c0;
+}
+
+
+.term-card.highlight {
+    background: #2f2f2f;
+    border: 1px solid #3a3a3a;
+}
+
+.term-card.highlight strong,
+.term-card.highlight span,
+.term-card.highlight small {
+    color: inherit;
+}
+
+
+.terms-note {
+    background: #1a1a1a;
+    border-left: 4px solid #3a66c0;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #ccc;
+    border-radius: 8px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .terms-grid {
+        grid-template-columns: 1fr;
+    }
+}

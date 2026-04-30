@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css" />
+<title>Δήλωση παράδοσης φορτίου</title>
+</head>
+
+<body>
+
+<!--  POPUP MODAL -->
+<div id="modalOverlay" class="modal-overlay hidden">
+    <div class="modal-box">
+        <p id="modalMessage"></p>
+        <button id="modalClose">Εντάξει</button>
+    </div>
+</div>
+
+<div class="card-container">
+
+    <!--  HEADER -->
+    <header class="form-header">
+        <div class="header-top">
+            <span class="section-label">LOGISTICS & SUPPLY CHAIN</span>
+            <h1>Δήλωση παράδοσης φορτίου</h1>
+            <p class="details">
+                Αρ. Φορτωτικής: <strong>BL‑2026‑04471</strong> ·
+                Ημ. άφιξης: <strong>25/03/2026</strong>
+            </p>
+        </div>
+
+        <div class="header-info">
+            <span class="info-icon">ℹ️</span>
+            <p>Το φορτίο σας έχει αφιχθεί στην αποθήκη μας. Διαθέτετε
+                <strong>5 ημερολογιακές ημέρες</strong> ελεύθερης αποθήκευσης
+                έως <strong>30/03/2026</strong>. Μετά την παρέλευσή τους εφαρμόζονται αποθήκευτρα βάσει τιμοκαταλόγου.
+            </p>
+        </div>
+    </header>
+
+    <!--  ΣΤΟΙΧΕΙΑ ΦΟΡΤΙΟΥ -->
+    <section class="section-block">
+
+        <h2 class="section-title">ΣΤΟΙΧΕΙΑ ΦΟΡΤΙΟΥ</h2>
+
+        <div class="grid-2">
+            <div class="info-box">
+                <label>Παραλήπτης</label>
+                <div class="value">ΑΛΦΑ ΑΕ</div>
+            </div>
+
+            <div class="info-box">
+                <label>Τεμάχια / Βάρος / Όγκος</label>
+                <div class="value">24 τεμ. / 1.840 kg / 53m³</div>
+            </div>
+
+            <div class="info-box">
+                <label>Κατάσταση</label>
+                <div class="badge success">Ελεύθερο</div>
+            </div>
+
+            <div class="info-box">
+                <label>Ελεύθερες ημέρες</label>
+                <div class="value">5 ημερολογιακές</div>
+            </div>
+        </div>
+    </section>
+
+    <!--  ΗΜΕΡΟΜΗΝΙΑ -->
+<section class="section-block">
+    <h2 class="section-title">ΕΠΙΘΥΜΗΤΗ ΗΜΕΡΟΜΗΝΙΑ ΠΑΡΑΔΟΣΗΣ</h2>
+
+
+<div class="input-group">
+    <label>Ημερομηνία παράδοσης *</label>
+
+<div class="date-bar">
+    <input type="date" id="deliveryDate" class="input-dark date-input-full">
+</div>
+</div>
+
+</section>
+
+    <!-- ΔΙΕΥΘΥΝΣΗ -->
+    <section class="section-block">
+        <h2 class="section-title">Διεύθυνση παράδοσης</h2>
+
+        <div class="address-box" id="defaultAddress">
+            <div class="value">
+                <strong>ΑΛΦΑ ΑΕ</strong><br>
+                Λεωφόρος Κηφισίας 124<br>
+                15125 Μαρούσι, Αττική<br>
+                ΑΦΜ: 998001234 - ΔΟΥ: ΦΑΕ Αθηνών
+            </div>
+        </div>
+
+        <button class="btn-outline" id="changeAddressBtn">Αλλαγή διεύθυνσης παράδοσης</button>
+
+        <!--  Νέα διεύθυνση -->
+        <div id="newAddressSection" class="hidden new-address">
+
+           
+<div class="input-group">
+    <label>Επωνυμία / Παραλήπτης *</label>
+    <input type="text" class="input-dark required-new" id="new_name" placeholder="π.χ. ΑΛΦΑ ΑΕ — Αποθήκη Πειραιά">
+</div>
+
+<div class="input-group">
+    <label>Οδός & Αριθμός *</label>
+    <input type="text" class="input-dark required-new" id="new_street" placeholder="π.χ. Λιμένος 8">
+</div>
+
+<div class="grid-3 tk-grid">
+    <div class="input-group">
+        <label>ΤΚ *</label>
+        <input type="text" class="input-dark required-new" id="new_zip" placeholder="π.χ. 185 40">
+    </div>
+
+    <div class="input-group">
+        <label>Πόλη *</label>
+        <input type="text" class="input-dark required-new" id="new_city" placeholder="π.χ. Πειραιάς">
+    </div>
+
+    <div class="input-group">
+        <label>Νομός *</label>
+        <input type="text" class="input-dark required-new" id="new_region" placeholder="π.χ. Αττική">
+    </div>
+</div>
+
+<div class="input-group">
+    <label>Τηλέφωνο επικοινωνίας *</label>
+    <input type="text" class="input-dark required-new" id="phone" placeholder="π.χ. 2100000000">
+</div>
+
+<div class="input-group">
+    <label>Κωδικός εγκατάστασης *</label>
+    <input type="text" class="input-dark required-new" id="new_code" placeholder="π.χ. GR-ATH-001">
+</div>
+
+            <button class="btn-outline fullwidth" id="cancelNewAddress">
+                Ακύρωση — επιστροφή στην αρχική διεύθυνση
+            </button>
+        </div>
+    </section>
+
+    <!--  ΕΠΙΛΟΓΕΣ ΠΑΡΑΔΟΣΗΣ -->
+
+<section class="section-block">
+    <h2 class="section-title">ΕΠΙΛΟΓΕΣ ΠΑΡΑΔΟΣΗΣ</h2>
+
+    <!--  Τρόπος παραλαβής -->
+    <label class="subtitle">Τρόπος παραλαβής</label>
+
+    <label class="radio-line">
+        <input type="radio" name="deliveryMethod" class="deliveryOption" value="address">
+        Παράδοση στη δηλωθείσα διεύθυνση
+    </label>
+
+    <label class="radio-line">
+        <input type="radio" name="deliveryMethod" class="deliveryOption" value="ramp">
+        Παραλαβή από ράμπα αποθήκης
+    </label>
+
+    <!--  Πρόσθετες επιλογές -->
+    <label class="subtitle" style="margin-top:18px;">Πρόσθετες επιλογές</label>
+
+    <label class="checkbox-line">
+        <input type="checkbox" id="customerService">
+        Επικοινωνία με Customer Service για ειδικό αίτημα
+    </label>
+
+    <!--  Panel που ανοίγει όταν τσεκάρεται -->
+    <div id="customerServicePanel" class="hidden cs-box">
+        <textarea class="textarea-dark" placeholder="Περιγράψτε το αίτημά σας..."></textarea>
+    </div>
+
+    <!--  Χάρτης ράμπας -->
+    <div id="rampMapSection" class="hidden ramp-map">
+        <strong>Κισσάβου, Ασπρόπυργος 193 00</strong>
+        <iframe class="map-box"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3141.0566581547973!2d23.570955475364297!3d38.069061595154274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a1a584bb2d5dc9%3A0xc0fa99b70f29e877!2sGoldair%20cargo!5e0!3m2!1sel!2sgr!4v1774889452256!5m2!1sel!2sgr"
+                allowfullscreen="">
+        </iframe>
+    </div>
+
+</section>
+<!--  ΟΡΟΙ ΠΡΟΣΩΡΙΝΗΣ ΑΠΟΘΗΚΕΥΣΗΣ -->
+<section class="section-block storage-terms">
+
+    <h2 class="section-title">ΟΡΟΙ ΠΡΟΣΩΡΙΝΗΣ ΑΠΟΘΗΚΕΥΣΗΣ</h2>
+
+    <div class="terms-box">
+
+        <p class="terms-intro">
+            Η προσωρινή αποθήκευση παρέχεται χωρίς χρέωση για τις πρώτες 
+            <strong>πέντε (5) ημερολογιακές ημέρες</strong> από την ημερομηνία άφιξης.
+        </p>
+
+        <p class="terms-sub">
+            Από την 6η ημέρα εφαρμόζονται οι ακόλουθες χρεώσεις:
+        </p>
+
+        <div class="terms-grid">
+
+            <div class="term-card">
+                <span>6η – 10η ημέρα</span>
+                <strong>0,06 €</strong>
+                <small>ανά 100 κιλά / ημέρα</small>
+            </div>
+
+            <div class="term-card">
+                <span>11η – 20η ημέρα</span>
+                <strong>0,09 €</strong>
+                <small>ανά 100 κιλά / ημέρα</small>
+            </div>
+
+            <div class="term-card">
+                <span>21η – 30η ημέρα</span>
+                <strong>0,12 €</strong>
+                <small>ανά 100 κιλά / ημέρα</small>
+            </div>
+
+            <div class="term-card">
+                <span>31η + ημέρα</span>
+                <strong>0,18 €</strong>
+                <small>ανά 100 κιλά / ημέρα</small>
+            </div>
+
+        </div>
+
+        <div class="terms-note">
+            Αναλογία όγκου/βάρους: <strong>1 cbm = 333 kg</strong><br>
+            Η χρέωση υπολογίζεται βάσει του μεγαλύτερου μεταξύ 
+            <strong>πραγματικού</strong> και <strong>ογκομετρικού βάρους</strong>.
+        </div>
+
+    </div>
+
+</section>
+
+    <!--  ΠΑΡΑΤΗΡΗΣΕΙΣ -->
+    <section class="section-block">
+        <h2 class="section-title">ΠΑΡΑΤΗΡΗΣΕΙΣ</h2>
+
+     
+<textarea class="textarea-dark" rows="4" id="notes" 
+    placeholder="Τυχόν παρατηρήσεις ή οδηγίες παράδοσης..."></textarea>
+
+
+        <button class="btn-primary fullwidth" id="submitForm">
+            Υποβολή δήλωσης παράδοσης
+        </button>
+    </section>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
