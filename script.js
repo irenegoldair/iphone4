@@ -30,9 +30,16 @@ function getGreekHolidays(year) {
     ];
 }
 
-function isInvalidDate(inputDate) {
+
+function parseLocalDate(value) {
+    if (!value) return null;
+
+    const [year, month, day] = value.split("-").map(Number);
+    return new Date(year, month - 1, day); // ✅ τοπική ημερομηνία
+}
+
+function isInvalidDate(date) {
     const today = new Date();
-    const date = new Date(inputDate); // ✅ αντίγραφο — ΔΕΝ πειράζουμε το αρχικό
 
     today.setHours(0,0,0,0);
     date.setHours(0,0,0,0);
