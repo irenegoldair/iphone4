@@ -1,7 +1,6 @@
 /* ==========================================================
    ORTHODOX EASTER & GREEK HOLIDAYS
 ========================================================== */
-
 function getOrthodoxEaster(year) {
     const a = year % 4;
     const b = year % 7;
@@ -69,9 +68,8 @@ function isInvalidDate(date) {
 }
 
 /* ==========================================================
-   MODAL POPUP
+    MODAL POPUP
 ========================================================== */
-
 const modal = document.getElementById("modalOverlay");
 const modalMessage = document.getElementById("modalMessage");
 const modalClose = document.getElementById("modalClose");
@@ -85,10 +83,10 @@ modalClose.addEventListener("click", () => {
     modal.classList.add("hidden");
 });
 
-/* ==========================================================
-   DATE PICKER
-========================================================== */
 
+/* ==========================================================
+    DATE PICKER
+========================================================== */
 const deliveryDate = document.getElementById("deliveryDate");
 const dateBar = document.querySelector(".date-bar");
 
@@ -98,6 +96,7 @@ if (dateBar && deliveryDate) {
         deliveryDate.focus();
     });
 }
+if (deliveryDate) {
 deliveryDate.addEventListener("blur", () => {
     if (!deliveryDate.value) return;
 
@@ -107,11 +106,10 @@ deliveryDate.addEventListener("blur", () => {
         deliveryDate.value = "";
         showPopup(
             "Η ημερομηνία επιλογής δεν μπορεί να είναι αυθημερών, " +
-            "Σάββατο, Κυριακή ή αργία."
-        );
-    }
-});
-
+            "Σάββατο, Κυριακή ή αργία.");
+        }
+    });
+}
 
 /* ==========================================================
    VALIDATION HELPER
@@ -143,22 +141,56 @@ function validateDeliveryDate(showError) {
 }
 
 /* ==========================================================
-   PHONE VALIDATION
+    NEW ADDRESS — SHOW / HIDE
 ========================================================== */
+const changeAddressBtn = document.getElementById("changeAddressBtn");
+const cancelNewAddress = document.getElementById("cancelNewAddress");
+const newAddressSection = document.getElementById("newAddressSection");
 
+changeAddressBtn.addEventListener("click", () => {
+
+    const selectedRadio = document.querySelector("input[name='deliveryMethod']:checked");
+
+    if (!selectedRadio || selectedRadio.value !== "address") {
+        showPopup("Πρώτα επιλέξτε 'Παράδοση στη δηλωθείσα διεύθυνση'.");
+        return;
+    }
+
+    newAddressSection.classList.remove("hidden");
+});
+
+cancelNewAddress.addEventListener("click", () => {
+    newAddressSection.classList.add("hidden");
+});
+
+
+/* ==========================================================
+    CUSTOMER SERVICE CHECKBOX
+========================================================== */
+const customerService = document.getElementById("customerService");
+const customerServicePanel = document.getElementById("customerServicePanel");
+
+
+
+/* ==========================================================
+    PHONE VALIDATION (10 digits)
+========================================================== */
 const phone = document.getElementById("phone");
+
 if (phone) {
     phone.addEventListener("input", () => {
-        phone.value = phone.value.replace(/\D/g, "");
+        const cleaned = phone.value.replace(/\D/g, "");
+        phone.value = cleaned;
     });
 }
 
-/* ==========================================================
-   NEW ADDRESS VALIDATION
-========================================================== */
 
+/* ==========================================================
+    REQUIRED VALIDATION — ΜΕ ΑΝΑΦΟΡΑ ΣΕ ΚΑΘΕ ΠΕΔΙΟ
+========================================================== */
 function validateNewAddressFields() {
-    const fields = [
+
+    const fieldMap = [
         { id: "new_name", label: "Επωνυμία / Παραλήπτης" },
         { id: "new_street", label: "Οδός & Αριθμός" },
         { id: "new_zip", label: "Τ.Κ." },
@@ -168,18 +200,22 @@ function validateNewAddressFields() {
         { id: "new_code", label: "Κωδικός εγκατάστασης" }
     ];
 
-    for (let f of fields) {
+    
+    for (let f of fieldMap) {
         const el = document.getElementById(f.id);
-        if (!el || !el.value.trim()) {
+        if (el && el.value.trim() === "") {
             el.style.borderColor = "#ff4444";
             showPopup(`Συμπληρώστε ${f.label}.`);
             return false;
+        } else {
+            el.style.borderColor = "#444"; 
         }
-        el.style.borderColor = "#444";
     }
 
-    if (phone.value.length !== 10) {
-        phone.style.borderColor = "#ff4444";
+    
+    const phoneVal = document.getElementById("phone").value;
+    if (phoneVal.length !== 10) {
+        document.getElementById("phone").style.borderColor = "#ff4444";
         showPopup("Το τηλέφωνο πρέπει να έχει υποχρεωτικά 10 ψηφία.");
         return false;
     }
@@ -187,45 +223,106 @@ function validateNewAddressFields() {
     return true;
 }
 
+
 /* ==========================================================
-   FORM SUBMIT — ΤΕΛΙΚΟΣ ΕΛΕΓΧΟΣ
+    DELIVERY METHOD — FIXED BEHAVIOR (radio but uncheckable)
 ========================================================== */
 
+const deliveryRadios = document.querySelectorAll("input[name='deliveryMethod']");
+const rampMapSection = document.getElementById("rampMapSection");
+const newAddressSection2 = document.getElementById("newAddressSection");
+const defaultAddress2 = document.getElementById("defaultAddress");
+
+deliveryRadios.forEach(radio => {
+
+   
+    radio.addEventListener("click", (e) => {
+        if (radio.dataset.waschecked === "true") {
+            radio.checked = false;
+            radio.dataset.waschecked = "false";
+
+           
+            rampMapSection.classList.add("hidden");
+            newAddressSection2.classList.remove("disabled");
+            newAddressSection2.classList.add("hidden");
+            defaultAddress2.classList.remove("hidden");
+        } else {
+            
+            deliveryRadios.forEach(r => r.dataset.waschecked = "false");
+            radio.dataset.waschecked = "true";
+        }
+    });
+
+   
+    radio.addEventListener("change", () => {
+
+        if (radio.checked && radio.value === "ramp") {
+            rampMapSection.classList.remove("hidden");
+            newAddressSection2.classList.add("hidden");
+            newAddressSection.classList.add("hidden");
+            newAddressSection2.classList.add("disabled");
+            defaultAddress2.classList.add("hidden");
+        }
+
+    if (radio.checked && radio.value === "address") {
+    rampMapSection.classList.add("hidden");
+
+    newAddressSection2.classList.remove("disabled");
+
+    // ❗ ΔΕΝ ανοίγουμε τα πεδία εδώ
+    newAddressSection2.classList.add("hidden");
+
+    defaultAddress2.classList.remove("hidden");
+}
+    });
+});
+
+/* ==========================================================
+   FORM SUBMISSION — Redirect to success page
+========================================================== */
 const submitForm = document.getElementById("submitForm");
-const newAddressSection = document.getElementById("newAddressSection");
 
-submitForm.addEventListener("click", (e) => {
-    e.preventDefault();
+submitForm.addEventListener("click", () => {
 
-    // ✅ DATE VALIDATION (POPUP)
-    if (!validateDeliveryDate(true)) return;
-
-    // ✅ DELIVERY METHOD
-    const selectedRadio = document.querySelector("input[name='deliveryMethod']:checked");
-    if (!selectedRadio) {
-        showPopup("Επιλέξτε τρόπο παράδοσης.");
+    if (deliveryDate.value.trim() === "") {
+        showPopup("Επιλέξτε ημερομηνία παράδοσης.");
         return;
     }
 
+    
+
+const selectedRadio = document.querySelector("input[name='deliveryMethod']:checked");
+
+
+if (!selectedRadio) {
+    showPopup("Επιλέξτε τρόπο παράδοσης.");
+    return;
+}
+
+
+const method = selectedRadio.value;
+
     let finalAddress = "";
 
-    if (selectedRadio.value === "ramp") {
+    if (method === "ramp") {
         finalAddress = "Κισσάβου, Ασπρόπυργος 193 00";
     } else {
+
         if (!newAddressSection.classList.contains("hidden")) {
-            if (!validateNewAddressFields()) return;
+
+         if (!validateNewAddressFields()) {
+    return; // ❗ αφήνουμε τη function να δείξει το σωστό μήνυμα
+}
+
             finalAddress =
-                `${new_name.value}, ${new_street.value}, ${new_zip.value} ` +
-                `${new_city.value}, ${new_region.value}`;
+                `${new_name.value}, ${new_street.value}, ${new_zip.value} ${new_city.value}, ${new_region.value}`;
+
         } else {
-            finalAddress =
-                "ΑΛΦΑ ΑΕ, Λεωφόρος Κηφισίας 124, 15125 Μαρούσι, Αττική";
+
+            finalAddress = "ΑΛΦΑ ΑΕ, Λεωφόρος Κηφισίας 124, 15125 Μαρούσι, Αττική";
         }
     }
 
-    const redirect =
-        `success.html?date=${encodeURIComponent(deliveryDate.value)}` +
-        `&address=${encodeURIComponent(finalAddress)}`;
-
+    const redirect = `success.html?date=${encodeURIComponent(deliveryDate.value)}&address=${encodeURIComponent(finalAddress)}`;
     window.location.href = redirect;
 });
