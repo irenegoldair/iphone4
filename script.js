@@ -40,22 +40,25 @@ function parseLocalDate(value) {
 function isInvalidDate(date) {
     if (!(date instanceof Date)) return true;
 
+    const checkDate = new Date(date);
+    checkDate.setHours(0,0,0,0);
+
     const today = new Date();
     today.setHours(0,0,0,0);
-    date.setHours(0,0,0,0);
 
     // ❌ αυθημερόν
-    if (date.getTime() === today.getTime()) return true;
+    if (checkDate.getTime() === today.getTime()) return true;
 
     // ❌ Σάββατο / Κυριακή
-    const day = date.getDay();
+    const day = checkDate.getDay();
     if (day === 0 || day === 6) return true;
 
     // ❌ αργίες
-    const holidays = getGreekHolidays(date.getFullYear());
+    const holidays = getGreekHolidays(checkDate.getFullYear());
+
     return holidays.some(h =>
-        h.getDate() === date.getDate() &&
-        h.getMonth() === date.getMonth()
+        h.getDate() === checkDate.getDate() &&
+        h.getMonth() === checkDate.getMonth()
     );
 }
 
@@ -91,19 +94,27 @@ if (dateBar && deliveryDate) {
 }
 
 /* ✅ POPUP ΟΤΑΝ ΕΠΙΛΕΓΕΤΑΙ ΛΑΘΟΣ ΗΜΕΡΟΜΗΝΙΑ */
+let lastValidValue = "";
+
 deliveryDate.addEventListener("change", () => {
     setTimeout(() => {
-        const d = parseLocalDate(deliveryDate.value);
+        const currentValue = deliveryDate.value;
+
+        if (!currentValue || currentValue === lastValidValue) return;
+
+        const d = parseLocalDate(currentValue);
 
         if (d && isInvalidDate(d)) {
+            deliveryDate.value = "";
             showPopup(
                 "Η ημερομηνία επιλογής δεν μπορεί να είναι αυθημερών, " +
                 "Σάββατο, Κυριακή ή αργία."
             );
+        } else {
+            lastValidValue = currentValue;
         }
-    }, 0); // ή 50 αν θες ultra safe
+    }, 30);
 });
-
 /* ==========================================================
    VALIDATION HELPER
 ========================================================== */
