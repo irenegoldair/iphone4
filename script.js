@@ -33,33 +33,39 @@ function getGreekHolidays(year) {
 
 function parseLocalDate(value) {
     if (!value) return null;
+
     const [year, month, day] = value.split("-").map(Number);
-    return new Date(year, month - 1, day);
+
+    // 🔥 FORCE local date χωρίς timezone issues
+    const date = new Date();
+    date.setFullYear(year, month - 1, day);
+    date.setHours(12, 0, 0, 0); // midday = no timezone shift
+
+    return date;
+}
+
+function isSameDay(a, b) {
+    return a.getFullYear() === b.getFullYear() &&
+           a.getMonth() === b.getMonth() &&
+           a.getDate() === b.getDate();
 }
 
 function isInvalidDate(date) {
     if (!(date instanceof Date)) return true;
 
-    const checkDate = new Date(date);
-    checkDate.setHours(0,0,0,0);
-
     const today = new Date();
-    today.setHours(0,0,0,0);
 
     // ❌ αυθημερόν
-    if (checkDate.getTime() === today.getTime()) return true;
+    if (isSameDay(date, today)) return true;
 
-    // ❌ Σάββατο / Κυριακή
-    const day = checkDate.getDay();
+    // ❌ ΣΚ
+    const day = date.getDay();
     if (day === 0 || day === 6) return true;
 
     // ❌ αργίες
-    const holidays = getGreekHolidays(checkDate.getFullYear());
+    const holidays = getGreekHolidays(date.getFullYear());
 
-    return holidays.some(h =>
-        h.getDate() === checkDate.getDate() &&
-        h.getMonth() === checkDate.getMonth()
-    );
+    return holidays.some(h => isSameDay(h, date));
 }
 
 /* ==========================================================
@@ -92,29 +98,21 @@ if (dateBar && deliveryDate) {
         deliveryDate.focus();
     });
 }
+deliveryDate.addEventListener("blur", () => {
+    if (!deliveryDate.value) return;
 
-/* ✅ POPUP ΟΤΑΝ ΕΠΙΛΕΓΕΤΑΙ ΛΑΘΟΣ ΗΜΕΡΟΜΗΝΙΑ */
-let lastValidValue = "";
+    const d = parseLocalDate(deliveryDate.value);
 
-deliveryDate.addEventListener("change", () => {
-    setTimeout(() => {
-        const currentValue = deliveryDate.value;
-
-        if (!currentValue || currentValue === lastValidValue) return;
-
-        const d = parseLocalDate(currentValue);
-
-        if (d && isInvalidDate(d)) {
-            deliveryDate.value = "";
-            showPopup(
-                "Η ημερομηνία επιλογής δεν μπορεί να είναι αυθημερών, " +
-                "Σάββατο, Κυριακή ή αργία."
-            );
-        } else {
-            lastValidValue = currentValue;
-        }
-    }, 30);
+    if (d && isInvalidDate(d)) {
+        deliveryDate.value = "";
+        showPopup(
+            "Η ημερομηνία επιλογής δεν μπορεί να είναι αυθημερών, " +
+            "Σάββατο, Κυριακή ή αργία."
+        );
+    }
 });
+
+
 /* ==========================================================
    VALIDATION HELPER
 ========================================================== */
@@ -126,7 +124,12 @@ function validateDeliveryDate(showError) {
     }
 
     const d = parseLocalDate(deliveryDate.value);
+
     if (!d || isInvalidDate(d)) {
+
+        deliveryDate.value = "";      // 🔥 ΚΑΘΑΡΙΖΕΙ
+        deliveryDate.focus();         // 🔥 UX FIX
+
         if (showError) {
             showPopup(
                 "Η ημερομηνία επιλογής δεν μπορεί να είναι αυθημερών, " +
