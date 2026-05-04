@@ -1,6 +1,7 @@
 /* ==========================================================
    ORTHODOX EASTER & GREEK HOLIDAYS
 ========================================================== */
+
 function getOrthodoxEaster(year) {
     const a = year % 4;
     const b = year % 7;
@@ -30,17 +31,16 @@ function getGreekHolidays(year) {
     ];
 }
 
-
 function parseLocalDate(value) {
     if (!value) return null;
-
     const [year, month, day] = value.split("-").map(Number);
-    return new Date(year, month - 1, day); // ✅ τοπική ημερομηνία
+    return new Date(year, month - 1, day);
 }
 
 function isInvalidDate(date) {
-    const today = new Date();
+    if (!(date instanceof Date)) return true;
 
+    const today = new Date();
     today.setHours(0,0,0,0);
     date.setHours(0,0,0,0);
 
@@ -60,8 +60,9 @@ function isInvalidDate(date) {
 }
 
 /* ==========================================================
-    MODAL POPUP
+   MODAL POPUP
 ========================================================== */
+
 const modal = document.getElementById("modalOverlay");
 const modalMessage = document.getElementById("modalMessage");
 const modalClose = document.getElementById("modalClose");
@@ -75,9 +76,8 @@ modalClose.addEventListener("click", () => {
     modal.classList.add("hidden");
 });
 
-
 /* ==========================================================
-    DATE PICKER — Clickable bar
+   DATE PICKER
 ========================================================== */
 
 const deliveryDate = document.getElementById("deliveryDate");
@@ -85,73 +85,63 @@ const dateBar = document.querySelector(".date-bar");
 
 if (dateBar && deliveryDate) {
     dateBar.addEventListener("click", () => {
-        deliveryDate.showPicker?.(); 
-        deliveryDate.focus();        
-        deliveryDate.click();       
+        deliveryDate.showPicker?.();
+        deliveryDate.focus();
     });
 }
 
-
+/* ✅ POPUP ΟΤΑΝ ΕΠΙΛΕΓΕΤΑΙ ΛΑΘΟΣ ΗΜΕΡΟΜΗΝΙΑ */
 deliveryDate.addEventListener("change", () => {
     const d = parseLocalDate(deliveryDate.value);
-    if (isInvalidDate(d)) {
-        deliveryDate.value = "";
-        showPopup("Η ημερομηνία επιλογής δεν μπορεί να είναι αυθημερών, Σάββατο, Κυριακή ή αργία.");
+    if (d && isInvalidDate(d)) {
+        showPopup(
+            "Η ημερομηνία επιλογής δεν μπορεί να είναι αυθημερών, " +
+            "Σάββατο, Κυριακή ή αργία."
+        );
     }
 });
 
-
 /* ==========================================================
-    NEW ADDRESS — SHOW / HIDE
+   VALIDATION HELPER
 ========================================================== */
-const changeAddressBtn = document.getElementById("changeAddressBtn");
-const cancelNewAddress = document.getElementById("cancelNewAddress");
-const newAddressSection = document.getElementById("newAddressSection");
 
-changeAddressBtn.addEventListener("click", () => {
-
-    const selectedRadio = document.querySelector("input[name='deliveryMethod']:checked");
-
-    if (!selectedRadio || selectedRadio.value !== "address") {
-        showPopup("Πρώτα επιλέξτε 'Παράδοση στη δηλωθείσα διεύθυνση'.");
-        return;
+function validateDeliveryDate(showError) {
+    if (!deliveryDate.value) {
+        if (showError) showPopup("Επιλέξτε ημερομηνία παράδοσης.");
+        return false;
     }
 
-    newAddressSection.classList.remove("hidden");
-});
+    const d = parseLocalDate(deliveryDate.value);
+    if (!d || isInvalidDate(d)) {
+        if (showError) {
+            showPopup(
+                "Η ημερομηνία επιλογής δεν μπορεί να είναι αυθημερών, " +
+                "Σάββατο, Κυριακή ή αργία."
+            );
+        }
+        return false;
+    }
 
-cancelNewAddress.addEventListener("click", () => {
-    newAddressSection.classList.add("hidden");
-});
-
-
-/* ==========================================================
-    CUSTOMER SERVICE CHECKBOX
-========================================================== */
-const customerService = document.getElementById("customerService");
-const customerServicePanel = document.getElementById("customerServicePanel");
-
-
+    return true;
+}
 
 /* ==========================================================
-    PHONE VALIDATION (10 digits)
+   PHONE VALIDATION
 ========================================================== */
+
 const phone = document.getElementById("phone");
-
 if (phone) {
     phone.addEventListener("input", () => {
-        const cleaned = phone.value.replace(/\D/g, "");
-        phone.value = cleaned;
+        phone.value = phone.value.replace(/\D/g, "");
     });
 }
 
-
 /* ==========================================================
-    REQUIRED VALIDATION — ΜΕ ΑΝΑΦΟΡΑ ΣΕ ΚΑΘΕ ΠΕΔΙΟ
+   NEW ADDRESS VALIDATION
 ========================================================== */
-function validateNewAddressFields() {
 
-    const fieldMap = [
+function validateNewAddressFields() {
+    const fields = [
         { id: "new_name", label: "Επωνυμία / Παραλήπτης" },
         { id: "new_street", label: "Οδός & Αριθμός" },
         { id: "new_zip", label: "Τ.Κ." },
@@ -161,22 +151,18 @@ function validateNewAddressFields() {
         { id: "new_code", label: "Κωδικός εγκατάστασης" }
     ];
 
-    
-    for (let f of fieldMap) {
+    for (let f of fields) {
         const el = document.getElementById(f.id);
-        if (el && el.value.trim() === "") {
+        if (!el || !el.value.trim()) {
             el.style.borderColor = "#ff4444";
             showPopup(`Συμπληρώστε ${f.label}.`);
             return false;
-        } else {
-            el.style.borderColor = "#444"; 
         }
+        el.style.borderColor = "#444";
     }
 
-    
-    const phoneVal = document.getElementById("phone").value;
-    if (phoneVal.length !== 10) {
-        document.getElementById("phone").style.borderColor = "#ff4444";
+    if (phone.value.length !== 10) {
+        phone.style.borderColor = "#ff4444";
         showPopup("Το τηλέφωνο πρέπει να έχει υποχρεωτικά 10 ψηφία.");
         return false;
     }
@@ -184,119 +170,45 @@ function validateNewAddressFields() {
     return true;
 }
 
-
 /* ==========================================================
-    DELIVERY METHOD — FIXED BEHAVIOR (radio but uncheckable)
+   FORM SUBMIT — ΤΕΛΙΚΟΣ ΕΛΕΓΧΟΣ
 ========================================================== */
 
-const deliveryRadios = document.querySelectorAll("input[name='deliveryMethod']");
-const rampMapSection = document.getElementById("rampMapSection");
-const newAddressSection2 = document.getElementById("newAddressSection");
-const defaultAddress2 = document.getElementById("defaultAddress");
-
-deliveryRadios.forEach(radio => {
-
-   
-    radio.addEventListener("click", (e) => {
-        if (radio.dataset.waschecked === "true") {
-            radio.checked = false;
-            radio.dataset.waschecked = "false";
-
-           
-            rampMapSection.classList.add("hidden");
-            newAddressSection2.classList.remove("disabled");
-            newAddressSection2.classList.add("hidden");
-            defaultAddress2.classList.remove("hidden");
-        } else {
-            
-            deliveryRadios.forEach(r => r.dataset.waschecked = "false");
-            radio.dataset.waschecked = "true";
-        }
-    });
-
-   
-    radio.addEventListener("change", () => {
-
-        if (radio.checked && radio.value === "ramp") {
-            rampMapSection.classList.remove("hidden");
-            newAddressSection2.classList.add("hidden");
-            newAddressSection.classList.add("hidden");
-            newAddressSection2.classList.add("disabled");
-            defaultAddress2.classList.add("hidden");
-        }
-
-    if (radio.checked && radio.value === "address") {
-    rampMapSection.classList.add("hidden");
-
-    newAddressSection2.classList.remove("disabled");
-
-    // ❗ ΔΕΝ ανοίγουμε τα πεδία εδώ
-    newAddressSection2.classList.add("hidden");
-
-    defaultAddress2.classList.remove("hidden");
-}
-    });
-});
-
-/* ==========================================================
-   FORM SUBMISSION — Redirect to success page
-========================================================== */
 const submitForm = document.getElementById("submitForm");
+const newAddressSection = document.getElementById("newAddressSection");
 
-submitForm.addEventListener("click", () => {
-    e.preventDefault(); 
+submitForm.addEventListener("click", (e) => {
+    e.preventDefault();
 
-    if (deliveryDate.value.trim() === "") {
-        showPopup("Επιλέξτε ημερομηνία παράδοσης.");
+    // ✅ DATE VALIDATION (POPUP)
+    if (!validateDeliveryDate(true)) return;
+
+    // ✅ DELIVERY METHOD
+    const selectedRadio = document.querySelector("input[name='deliveryMethod']:checked");
+    if (!selectedRadio) {
+        showPopup("Επιλέξτε τρόπο παράδοσης.");
         return;
     }
-
-    
-// ✅ ΑΥΤΟ ΕΙΝΑΙ ΤΟ FIX ΓΙΑ IPHONE
-    const parsedDate = parseLocalDate(deliveryDate.value);
-
-    if (!parsedDate || isInvalidDate(parsedDate)) {
-        showPopup(
-            "Η ημερομηνία επιλογής δεν μπορεί να είναι αυθημερών, " +
-            "Σάββατο, Κυριακή ή αργία."
-        );
-        return;
-    }
-
-    
-
-const selectedRadio = document.querySelector("input[name='deliveryMethod']:checked");
-
-
-if (!selectedRadio) {
-    showPopup("Επιλέξτε τρόπο παράδοσης.");
-    return;
-}
-
-
-const method = selectedRadio.value;
 
     let finalAddress = "";
 
-    if (method === "ramp") {
+    if (selectedRadio.value === "ramp") {
         finalAddress = "Κισσάβου, Ασπρόπυργος 193 00";
     } else {
-
         if (!newAddressSection.classList.contains("hidden")) {
-
-         if (!validateNewAddressFields()) {
-    return; // ❗ αφήνουμε τη function να δείξει το σωστό μήνυμα
-}
-
+            if (!validateNewAddressFields()) return;
             finalAddress =
-                `${new_name.value}, ${new_street.value}, ${new_zip.value} ${new_city.value}, ${new_region.value}`;
-
+                `${new_name.value}, ${new_street.value}, ${new_zip.value} ` +
+                `${new_city.value}, ${new_region.value}`;
         } else {
-
-            finalAddress = "ΑΛΦΑ ΑΕ, Λεωφόρος Κηφισίας 124, 15125 Μαρούσι, Αττική";
+            finalAddress =
+                "ΑΛΦΑ ΑΕ, Λεωφόρος Κηφισίας 124, 15125 Μαρούσι, Αττική";
         }
     }
 
-    const redirect = `success.html?date=${encodeURIComponent(deliveryDate.value)}&address=${encodeURIComponent(finalAddress)}`;
+    const redirect =
+        `success.html?date=${encodeURIComponent(deliveryDate.value)}` +
+        `&address=${encodeURIComponent(finalAddress)}`;
+
     window.location.href = redirect;
 });
