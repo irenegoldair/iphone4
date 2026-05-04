@@ -92,13 +92,16 @@ if (dateBar && deliveryDate) {
 
 /* ✅ POPUP ΟΤΑΝ ΕΠΙΛΕΓΕΤΑΙ ΛΑΘΟΣ ΗΜΕΡΟΜΗΝΙΑ */
 deliveryDate.addEventListener("change", () => {
-    const d = parseLocalDate(deliveryDate.value);
-    if (d && isInvalidDate(d)) {
-        showPopup(
-            "Η ημερομηνία επιλογής δεν μπορεί να είναι αυθημερών, " +
-            "Σάββατο, Κυριακή ή αργία."
-        );
-    }
+    setTimeout(() => {
+        const d = parseLocalDate(deliveryDate.value);
+
+        if (d && isInvalidDate(d)) {
+            showPopup(
+                "Η ημερομηνία επιλογής δεν μπορεί να είναι αυθημερών, " +
+                "Σάββατο, Κυριακή ή αργία."
+            );
+        }
+    }, 0); // ή 50 αν θες ultra safe
 });
 
 /* ==========================================================
